@@ -1,0 +1,247 @@
+@media (min-width: 960px) {
+
+    /* Adjust this to suit your design */
+    .card-container {
+        justify-content: flex-start;
+        font-size: 16px;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    /* Changed to white */
+    padding: 20px 20px;
+    box-shadow: 0 2px 4px rgba(90, 90, 90, 0.1);
+    /* Added shadow */
+}
+
+/* Rest of the styles remain unchanged */
+
+.navbar-item {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+    /* Added transition for hover effect */
+}
+
+.navbar-item:hover {
+    color: #002c5e;
+    /* Color changes on hover */
+}
+
+.navbar-logo,
+.navbar-item,
+.sign-up-btn {
+    font-size: 18px;
+}
+
+.navbar-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-btn {
+    text-decoration: none;
+    color: rgb(5, 5, 5);
+    cursor: 16px;
+    cursor: pointer;
+    pointer-events: auto;
+    padding: 9px 8px;
+}
+
+.sign-up-btn {
+    text-decoration: none;
+    color: #ffffff;
+    padding: 9px 14px;
+    background-color: #003d82;
+    border-radius: 10px;
+    cursor: 16px;
+    cursor: pointer;
+    pointer-events: auto;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.sign-up-btn:hover {
+    background-color: #002c5e;
+    ;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    /* Use full width and control the card width instead */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    /* background: #f1f5f9; */
+    border-radius: 10px;
+}
+
+.card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 240px;
+    /* Adjust card width */
+    height: 360px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    margin-top: 30px;
+
+}
+
+.card-header {
+    position: relative;
+    color: #ffffff;
+}
+
+/* .card-header::before {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #ff5e62;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+} */
+
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    margin-top: -10px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card-info div {
+    display: flex;
+    align-items: center;
+}
+
+.card-info svg {
+    margin-right: 5px;
+}
+
+.card-price {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ff2c2c;
+}
+
+
+.favorite-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.card-link {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+}
+
+.card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero {
+    background-size: cover;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #333333;
+    text-align: center;
+    
+}
+
+.hero img {
+    width: 100%;
+    min-height: 400;
+    max-height: 800;
+    display: block;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.button {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #ff4757;
+}

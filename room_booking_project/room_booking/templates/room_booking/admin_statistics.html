@@ -8,6 +8,9 @@
     <!-- Font Awesome Cdn Link -->
     <script src="https://kit.fontawesome.com/4a55d93132.js" crossorigin="anonymous"></script>
     {% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'room_booking/css/admin_statistics.css' %}">
 </head>
@@ -24,7 +27,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{% url 'admin_profile' %}">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
@@ -36,21 +39,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{% url 'admin_management' %}">
                         <i class="fa fa-door-open"></i>
                         <span>Management</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-bell"></i>
-                        <span>Notifications</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-cog"></i>
-                        <span>Setting</span>
                     </a>
                 </li>
                 <li class="logout">
@@ -73,7 +64,6 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Search">
                 </div>
-                <img src="" alt="">
             </div>
         </div>
 
@@ -103,10 +93,20 @@
         </div>
 
         <div class="tabular--wrapper">
-            <h3 class="main--title">Booking Data</h3>
-            <canvas id="dwmy_chart"></canvas>
+            <h3 class="main--title">Visualize Data</h3>
+            <div class="button-container">
+                <button onclick="dateFilter('day')">Day</button>
+                <button onclick="dateFilter('week')">Week</button>
+                <button onclick="dateFilter('month')">Month</button>
+                <button onclick="dateFilter('year')">Year</button>
+            </div>
+            <div class="chart--line">
+                <canvas id="dwmy_chart"></canvas>
+            </div>
         </div>
     </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="{% static 'room_booking/js/admin_statistics.js' %}"></script>
 </body>
 

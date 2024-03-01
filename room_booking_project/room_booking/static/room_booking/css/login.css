@@ -1,0 +1,16 @@
+@media (min-width: 960px) {
+
+    /* Adjust this to suit your design */
+    .card-container {
+        justify-content: flex-start;
+        font-size: 16px;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fc;
+}
+

@@ -152,7 +152,7 @@ body {
 .card--wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 2.5rem;
+    gap: 2rem;
 }
 
 .main--title {
@@ -223,51 +223,24 @@ body {
     padding: 2rem;
 }
 
-.table-container {
+.chart--line {
     width: 100%;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.button-container {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
 }
 
-thead {
-    background: rgba(113, 99, 186, 255);
-    color: #fff;
-}
-
-th {
-    padding: 15px;
-    text-align: left;
-}
-
-tbody {
-    background: #f2f2f2;
-}
-
-td {
-    padding: 15px;
-    font-size: 14px;
-    color: #333;
-}
-
-tr:nth-child(even) {
-    background: #fff;
-}
-
-tfoot {
-    background: rgba(113, 99, 186, 255);
-    font-weight: bold;
-    color: #fff;
-}
-
-tfoot td {
-    padding: 15px;
-}
-
-.table-container button {
-    color: green;
-    background: none;
+.button-container button {
+    border-radius: 10px;
+    width: 60px;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
+
+.button-container button:hover {
+    background: #c7c7c7;
+}
+

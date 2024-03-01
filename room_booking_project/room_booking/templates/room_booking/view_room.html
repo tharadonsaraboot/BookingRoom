@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Room</title>
+</head>
+<body>
+    <h1>Room Details</h1>
+    <p>Name: {{ room.name }}</p>
+    <p>Beds: {{ room.beds }}</p>
+    <p>Baths: {{ room.baths }}</p>
+    <p>Size: {{ room.size }}</p>
+    <p>Rating: {{ room.rating }}</p>
+    <p>Reviews Count: {{ room.reviews_count }}</p>
+    <p>Price: {{ room.price }}</p>
+    <img src="{{ room.image.url }}" alt="Room Image">
+</body>
+</html>

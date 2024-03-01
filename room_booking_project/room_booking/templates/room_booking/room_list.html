@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,181 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Rooms</title>
-    <style>
-        @media (min-width: 960px) { /* Adjust this to suit your design */
-            .card-container {
-                justify-content: flex-start; /* Align cards to the start of the container */
-            }
-        }
+    {% load static %}
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'room_booking/assets/' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'room_booking/css/room_list.css' %}">
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0; 
-            padding: 0;
-            background-color: #f4f7fc;
-            /* background: linear-gradient(to bottom right, #f4f7fc, #ffffff); */
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffffff; /* Changed to white */
-            padding: 20px 20px;
-            box-shadow: 0 2px 4px rgba(90, 90, 90, 0.1); /* Added shadow */
-        }
-
-        /* Rest of the styles remain unchanged */
-
-        .navbar-item {
-            margin-right: 15px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            transition: color 0.3s; /* Added transition for hover effect */
-        }
-
-        .navbar-item:hover {
-            color: #007bff; /* Color changes on hover */
-        }
-
-        .navbar-logo,
-        .navbar-item,
-        .sign-up-btn {
-            font-size: 18px; /* Adjusted font size for better visibility */
-        }
-
-        .sign-up-btn {
-            padding: 8px 16px;
-            background-color: #007bff; /* Blue background */
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s; /* Added transition for hover effect */
-        }
-
-        .sign-up-btn:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-        }
-
-        .card-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .card {
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            height: 400px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            
-        }
-
-        .card-header {
-            position: relative;
-            color: #ffffff;
-            padding: 80px;
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-        }
-
-        .card-header::before {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: #ff5e62;
-            border-radius: 5px;
-            padding: 5px 10px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .card-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Aligns children to start and end of flex container */
-            height: calc(100% - 200px); /* Adjust height based on the card-header */
-            padding: 20px;
-        }
-
-        .card-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .card-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .card-info div {
-            display: flex;
-            align-items: center;
-        }
-
-        .card-info svg {
-            margin-right: 5px;
-        }
-
-        .card-price {
-            align-self: flex-start;
-            margin-top: auto;
-            margin-bottom: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #ff7c7c;
-        }
-
-        .card-rating {
-            align-self: flex-start;
-            margin-top: auto;
-            margin-bottom: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #000000;
-        }
-
-        .card-rating svg {
-            fill: #ffc107;
-        }
-
-        .card-rating span {
-            margin-left: 5px;
-            font-size: 16px;
-        }
-
-        .favorite-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            cursor: pointer;
-        }
-        .card-link {
-            color: inherit; /* This ensures that the anchor tag doesn't change the text color */
-            text-decoration: none; /* This removes the underline from the text */
-            display: block; /* This makes the anchor fill the area of its container */
-        }
-
-        .card:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Optional: Adds a hover effect to the card */
-        }
-    </style>
 </head>
 
 <body>
@@ -188,55 +23,74 @@
     <div>
         <nav class="navbar">
             <div class="navbar-left">
-                <a href="#" class="navbar-item">BOOKINGROOMX</a>
-                <a href="#" class="navbar-item">Services</a>
-                <a href="#" class="navbar-item">About</a>
-                <a href="#" class="navbar-item">Contact</a>
+                <a href="{% url 'room_list' %}" class="navbar-item">BookingRooms</a>
             </div>
             <div class="navbar-right">
-                <a href="#" class="sign-up-btn">Sign Up</a>
+                {% if user.is_authenticated %}
+
+                <a href="{% url 'user_profile' user.id %}" class="login-btn">{{ user.username }}</a>
+                <a href="{% url 'logout' %}" class="sign-up-btn">Logout</a>
+
+                {% else %}
+                
+                <a href="{% url 'login' %}" class="login-btn">Login</a>
+                <a href="{% url 'signup' %}" class="sign-up-btn">Sign Up</a>
+
+                {% endif %}
             </div>
         </nav>
         <main>
-            <h1>Available Rooms</h1>
-            <div class="card-container">
-                {% for room in rooms %}
-                <!-- The entire card is wrapped in an <a> tag that leads to the room details page -->
-                <a href="{% url 'room_details' room.id %}" class="card-link">
-                    <div class="card">
-                        <div class="card-header">
-                            <img src="{{ room.image_url }}" alt="Room image" class="card-image">
-                            <!-- <div class="favorite-icon">
-                            </div> -->
-                            <!-- {% if room.discount %}
-                            <div class="discount-tag">-{{ room.discount }}% today</div>
-                            {% endif %} -->
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">{{ room.name }}</h3>
-                            <div class="card-info">
-                                <!-- Icons and info here -->
-                                <div>{{ room.beds }} beds</div>
-                                <div>{{ room.baths }} baths</div>
-                                <div>{{ room.size }} Sq. Ft</div>
+            <!-- <section class="hero">
+                <h1>New generation of booking</h1>
+                <p>Booking tax-free from Chis. platform</p>
+                <img src="{% static 'room_booking/assets/image/mesh-640.png' %}" alt="">
+                <a href="#" class="button">Keep calm & travel on</a>
+            </section> -->
+            <section class="hero">
+                <img src="{% static 'room_booking/assets/image/mesh-640.png' %}" alt="Background"
+                    class="hero-background">
+                <div class="hero-content">
+                    <h1>Booking Rooms</h1>
+                    <p>Booking for Rest</p>
+                    <a href="#target-section" class="button" id="scrollButton">Let's Booking</a>
+                </div>
+            </section>
+            <section id="target-section">
+                <div class="card-container">
+                    {% for room in rooms %}
+                    <a href="{% url 'book_room' room.id %}" class="card-link">
+                        <div class="card">
+                            <div class="card-header">
+                                <img src="{{ room.image.url }}" alt="Room image"
+                                    class="card-image">
                             </div>
-                            <div class="card-rating">
-                                <!-- Rating stars here -->
-                                <span>{{ room.rating }} ({{ room.reviews_count }})</span>
+                            <div class="card-body">
+                                <h3 class="card-title">{{ room.name }}</h3>
+                                <div class="card-info">
+                                    <!-- Icons and info here -->
+                                    <div>{{ room.beds }} beds</div>
+                                    <div>{{ room.baths }} baths</div>
+                                    <div>{{ room.size }} Sq. Ft</div>
+                                </div>
+
+                                <div class="card-price">฿ {{ room.price }}</div>
                             </div>
-                            <div class="card-price">฿ {{ room.price }}</div>
                         </div>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </section>
         </main>
         <aside>
         </aside>
         <footer>
-
         </footer>
     </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="{% static 'room_booking/js/room_list.js' %}"></script>
 </body>
 
 </html>

@@ -11,6 +11,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 import json
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from .forms import UserForm
+from .forms import RoomForm
+from django.utils.timezone import datetime
+from django.db.models import Sum, Count
 
 def signup_view(request):
     if request.method == 'POST':
@@ -37,7 +42,7 @@ def login_view(request):
                 if user.is_staff:  # Assuming admins have is_staff flag set 
                     return redirect('admin_dashboard')  
                 else:
-                    return redirect('home')  
+                    return redirect('/')  
             else:
                 pass
     return render(request, 'room_booking/login.html', {'form': form})
@@ -50,14 +55,12 @@ def logout_view(request):
 def book_room(request, room_id):
     room = get_object_or_404(Room, id=room_id)
     if request.method == 'POST':
-        start_date = timezone.now()  # Use current time as the start date
         form = BookingForm(request.POST)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
             booking.room = room
-            booking.start_date = start_date
-            booking.save()
+            booking.save()  # Save booking without setting amount (it will be calculated automatically)
             return redirect('payment_page', room_id=room_id)
     else:
         form = BookingForm()
@@ -65,7 +68,6 @@ def book_room(request, room_id):
 
 def booking_success(request):
     return render(request, 'room_booking/booking_success.html')
-
 
 def room_list(request):
     rooms = Room.objects.all()
@@ -75,50 +77,51 @@ def room_details(request, room_id):
     room = get_object_or_404(Room, pk=room_id)
     return render(request, 'room_booking/room_details.html', {'room': room})
 
+def user_profile(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    bookings = Booking.objects.filter(user=user)
+    return render(request, 'room_booking/user_profile.html', {'user': user, 'bookings': bookings})
+
 @login_required
 def payment_page(request, room_id):
-    # Retrieve the Room instance by ID or return a 404
     room = get_object_or_404(Room, pk=room_id)
 
     if request.method == 'POST':
         form = PaymentForm(request.POST, request.FILES)
         if form.is_valid():
-            # Extract the uploaded file and calculate the payment amount
             uploaded_file = form.cleaned_data['slip']
-            payment_amount = room.earnest_money + room.prize
+            payment_amount = room.price
 
-            # Create PaymentSlip instance and mark it as unverified
-            PaymentSlip.objects.create(
-                user=request.user,
-                room=room,
-                slip=uploaded_file,
-                verified=False
-            )
-
-            # Calculate and store the countdown end time in the session
-            countdown_end = timezone.now() + timedelta(minutes=10)
-            request.session['countdown_end'] = countdown_end.isoformat()
-
-            # Redirect to the waiting verification page and pass the room_id
-            return render(request, 'room_booking/waiting_verification.html', {'room_id': room_id})
+            # Retrieve the associated booking for the user and room
+            booking = Booking.objects.filter(user=request.user, room=room).first()
+            if booking:
+                guest_name = booking.guest_name
+                PaymentSlip.objects.create(
+                    user=request.user,
+                    room=room,
+                    slip=uploaded_file,
+                    verified=False,
+                    booking=booking,  # Associate the PaymentSlip with the booking
+                    guest_name=guest_name  # Include the guest name
+                )
+                countdown_end = timezone.now() + timedelta(minutes=10)
+                request.session['countdown_end'] = countdown_end.isoformat()
+                return render(request, 'room_booking/waiting_verification.html', {'room_id': room_id})
+            else:
+                messages.error(request, 'Booking not found.')
         else:
-            # If the form is not valid, display an error message
             messages.error(request, 'There was an error with your submission. Please check your data and try again.')
     else:
         form = PaymentForm()
 
-    # Calculate payment amount for GET requests or in case of form errors
-    payment_amount = room.earnest_money + room.prize
-
-    # Prepare the context with the form, payment amount, and sample bank details
+    
+    payment_amount = room.price
     context = {
         'form': form,
         'payment_amount': payment_amount,
-        'bank_details': 'Bank Name: ABC Bank\nAccount Number: 123456789',  # Sample bank details
-        'room_id': room_id  # Make sure to include room_id in the context for the template
+        'bank_details': 'ABC Bank\nAccount Number: 123456789',
+        'room_id': room_id,
     }
-
-    # Render the payment page template with the context
     return render(request, 'room_booking/payment_page.html', context)
 
 @login_required
@@ -136,10 +139,9 @@ def verify_payment_slip(request, slip_id):
     payment_slip.verified = True
     payment_slip.save()
     messages.success(request, 'Payment slip verified successfully.')
-    return redirect('admin_payment_slips')
+    return redirect('admin_dashboard')
 
 def check_payment_status(request, room_id):
-    # Use filter() to get a queryset and then first() to get a single instance or None
     payment_slip = PaymentSlip.objects.filter(room_id=room_id, user=request.user).first()
     
     if payment_slip:
@@ -147,20 +149,96 @@ def check_payment_status(request, room_id):
     else:
         return JsonResponse({'error': 'Payment slip not found'}, status=404)
 
-@user_passes_test(lambda u: u.is_staff) 
+@user_passes_test(lambda u: u.is_staff)
 def admin_dashboard(request):
-    # ... Logic for admin view ...
-    return render(request, 'room_booking/admin_dashboard.html')
+    payment_slips = PaymentSlip.objects.all()  # Retrieve all payment slips
+    return render(request, 'room_booking/admin_dashboard.html', {'payment_slips': payment_slips})
 
 @user_passes_test(lambda u: u.is_staff) 
 def admin_statistics(request):
-    # ... Logic for admin view ...
     return render(request, 'room_booking/admin_statistics.html')
 
-# def admin_payment_slips(request):
-#     payment_slips = PaymentSlip.objects.filter(verified=False)
-#     return render(request, 'room_booking/admin_payment_slips.html', {'payment_slips': payment_slips})
+@user_passes_test(lambda u: u.is_staff) 
+def admin_profile(request):
+    users = User.objects.all()
+    return render(request, 'room_booking/admin_profile.html', {'users': users})
 
-# def view_payment_slip(request, slip_id):
-#     payment_slip = get_object_or_404(PaymentSlip, id=slip_id)
-#     return render(request, 'room_booking/view_payment_slip.html', {'payment_slip': payment_slip})
+@user_passes_test(lambda u: u.is_staff) 
+def admin_management(request):
+    rooms = Room.objects.all()
+    return render(request, 'room_booking/admin_management.html', {'rooms': rooms})
+
+def add_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_profile')
+    else:
+        form = UserForm()
+    return render(request, 'room_booking/add_user.html', {'form': form})
+
+def view_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    return render(request, 'room_booking/view_user.html', {'user': user})
+
+def edit_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_profile')
+    else:
+        form = UserForm(instance=user)
+    return render(request, 'room_booking/edit_user.html', {'form': form})
+
+def delete_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    user.delete()
+    return redirect('admin_profile')
+
+def view_room(request, room_id):
+    room = get_object_or_404(Room, pk=room_id)
+    return render(request, 'room_booking/view_room.html', {'room': room})
+
+def edit_room(request, room_id):
+    room = get_object_or_404(Room, pk=room_id)
+    if request.method == 'POST':
+        form = RoomForm(request.POST, instance=room)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_management')
+    else:
+        form = RoomForm(instance=room)
+    return render(request, 'room_booking/edit_room.html', {'form': form})
+
+def delete_room(request, room_id):
+    room = get_object_or_404(Room, pk=room_id)
+    if request.method == 'POST':
+        room.delete()
+        return redirect('admin_management')  # Or any other appropriate URL
+    return render(request, 'room_booking/delete_room.html', {'room': room})
+
+def create_room(request):
+    if request.method == 'POST':
+        form = RoomForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_management')
+    else:
+        form = RoomForm()
+    return render(request, 'room_booking/create_room.html', {'form': form})
+
+def user_data(request):
+    total_users = User.objects.count()
+    users_with_bookings = Booking.objects.values_list('user', flat=True).distinct().count()
+
+    user_list = User.objects.all().values('username', 'first_name', 'last_name')
+
+    data = {
+        'total_users': total_users,
+        'users_with_bookings': users_with_bookings,
+        'user_list': user_list
+    }
+    return JsonResponse(data)

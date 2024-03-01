@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <script src="https://kit.fontawesome.com/4a55d93132.js" crossorigin="anonymous"></script>
+    {% load static %}
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'room_booking/css/admin_profile.css' %}">
+</head>
+
+<body>
+    <div class="SB">
+        <div class="sidebar">
+            <div class="logo"></div>
+            <ul class="menu">
+                <li>
+                    <a href="{% url 'admin_dashboard' %}">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'admin_profile' %}">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_statistics' %}">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Statistics</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_management' %}">
+                        <i class="fa fa-door-open"></i>
+                        <span>Management</span>
+                    </a>
+                </li>
+                <li class="logout">
+                    <a href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main--content">
+        <div class="header--wrapper">
+            <div class="header--title">
+                <span>Admin</span>
+                <h2>Profile</h2>
+            </div>
+            <div class="user--info">
+                <div class="search--box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+        </div>
+
+        <div class="card--container">
+            <h3 class="main--title">Profile Management</h3>
+            <div class="profile--filter">
+                <div class="entries">
+                    Show <select name="" id="table_size">
+                        <option value="10">10</option>
+                        <option value="10">20</option>
+                        <option value="10">50</option>
+                        <option value="10">100</option>
+                    </select> Rows
+                </div>
+
+                <div class="filter">
+                    <label for="search">Search:</label>
+                    <input type="search" name="" id="search" placeholder="Enter name/id">
+                </div>
+
+
+            </div>
+            <div class="addMemberBtn">
+                <div class="b"></div>
+                <a href="{% url 'add_user' %}"><button>Create</button></a>
+            </div>
+
+            <div class="tabular--wrapper">
+                <h3 class="main--title">User Data</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Date Joined</th>
+                                <th>Is Staff</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.date_joined }}</td>
+                                <td>{{ user.is_staff }}</td>
+                                <td>
+                                    <a href="{% url 'edit_user' user.id %}">Edit</a>
+                                    <a href="{% url 'delete_user' user.id %}">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="addmember--content">
+            <div class="popup">
+                <header>
+                    <h2 class="modalTitle">Fill the Form</h2>
+                    <button class="closeBtn"><i class="fa-solid fa-xmark"></i></button>
+                </header>
+
+                <div class="body">
+                    <div class="inputFieldContainer">
+                        <div class="form--control">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" required>
+                        </div>
+                    
+                        <div class="form--control">
+                            <label for="fName">First Name</label>
+                            <input type="text" name="first_name" id="fName" required>
+                        </div>
+                    
+                        <div class="form--control">
+                            <label for="lName">Last Name</label>
+                            <input type="text" name="last_name" id="lName" required>
+                        </div>
+                    
+                        <div class="form--control">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" required>
+                        </div>
+                    
+                        <div class="form--control">
+                            <label for="dateJoined">Date Joined</label>
+                            <input type="datetime-local" name="date_joined" id="dateJoined" required>
+                        </div>
+                    
+                        <div class="form--control">
+                            <label for="isStaff">Is Staff</label>
+                            <select name="is_staff" id="isStaff" required>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="popupFooter">
+                    <button form="myForm" class="submitBtn">Submit</button>
+                </footer>
+
+            </div>
+        </div>
+
+
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="{% static 'room_booking/js/admin_profile.js' %}"></script>
+</body>
+
+</html>
