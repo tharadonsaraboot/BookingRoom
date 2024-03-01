@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Payment Slips</title>
+</head>
+<body>
+    <h1>Admin Payment Slips</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Room</th>
+                <th>Slip</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment_slip in payment_slips %}
+            <tr>
+                <td>{{ payment_slip.user.username }}</td>
+                <td>{{ payment_slip.room.location }}</td>
+                <td><a href="{{ payment_slip.slip.url }}">View Slip</a></td>
+                <td><a href="{% url 'verify_payment_slip' payment_slip.id %}">Verify</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

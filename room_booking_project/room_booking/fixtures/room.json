@@ -1,0 +1,142 @@
+[
+  {
+    "model": "room_booking.Room",
+    "pk": 1,
+    "fields": {
+      "name": "Luxury Oceanfront Suite",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 2,
+      "baths": 2,
+      "size": 650,
+      "rating": 4.8,
+      "reviews_count": 230,
+      "price": 250
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 2,
+    "fields": {
+      "name": "Cozy Garden View Room",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 1,
+      "baths": 1,
+      "size": 300,
+      "rating": 4.2,
+      "reviews_count": 105,
+      "price": 120
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 3,
+    "fields": {
+      "name": "City Center Studio",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 1,
+      "baths": 1,
+      "size": 250,
+      "rating": 4.0,
+      "reviews_count": 55,
+      "price": 90
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 4,
+    "fields": {
+      "name": "Family-Friendly Mountain Cabin",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 3,
+      "baths": 2,
+      "size": 800,
+      "rating": 4.6,
+      "reviews_count": 180,
+      "price": 180
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 5,
+    "fields": {
+      "name": "Modern Downtown Loft",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 1,
+      "baths": 1.5,
+      "size": 450,
+      "rating": 4.5,
+      "reviews_count": 90,
+      "price": 160
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 6,
+    "fields": {
+      "name": "Poolside Bungalow",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 2,
+      "baths": 1,
+      "size": 400,
+      "rating": 4.3,
+      "reviews_count": 150,
+      "price": 130
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 7,
+    "fields": {
+      "name": "Beachfront Villa",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 4,
+      "baths": 3,
+      "size": 1200,
+      "rating": 5.0,
+      "reviews_count": 80,
+      "price": 400
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 8,
+    "fields": {
+      "name": "Historic City Apartment",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 2,
+      "baths": 1.5,
+      "size": 550,
+      "rating": 4.1,
+      "reviews_count": 110,
+      "price": 140
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 9,
+    "fields": {
+      "name": "Rustic Lakeside Cottage",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 2,
+      "baths": 1,
+      "size": 400,
+      "rating": 4.4,
+      "reviews_count": 70,
+      "price": 110
+    }
+  },
+  {
+    "model": "room_booking.Room",
+    "pk": 10,
+    "fields": {
+      "name": "Spacious Treehouse Retreat",
+      "image_url": "./room_booking/fixtures/img/T1.png",
+      "beds": 1,
+      "baths": 1,
+      "size": 350,
+      "rating": 4.9,
+      "reviews_count": 45,
+      "price": 190
+    }
+  }
+]

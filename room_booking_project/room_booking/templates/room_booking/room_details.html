@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room Details - {{ room.location }}</title>
+</head>
+<body>
+    <h1>{{ room.location }}</h1>
+    <p><strong>Size:</strong> {{ room.size }}</p>
+    <p><strong>Description:</strong> {{ room.description }}</p>
+    <p><strong>Earnest Money:</strong> ${{ room.earnest_money }}</p>
+    <p><strong>Prize:</strong> ${{ room.prize }}</p>
+    <!-- Add more details as needed -->
+    <a href="{% url 'book_room' room.id %}">Book Now</a>
+</body>
+</html>

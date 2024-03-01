@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Payment Slip</title>
+</head>
+<body>
+    <h1>View Payment Slip</h1>
+    <p>User: {{ payment_slip.user.username }}</p>
+    <p>Room: {{ payment_slip.room.location }}</p>
+    <p>Slip Image:</p>
+    <img src="{{ payment_slip.slip.url }}" alt="Payment Slip">
+    <!-- Add more details as needed -->
+</body>
+</html>

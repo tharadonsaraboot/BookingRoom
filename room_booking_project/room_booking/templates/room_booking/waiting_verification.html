@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waiting for Verification</title>
+</head>
+<body>
+    <h1>Waiting for Payment Verification</h1>
+    <p>Please wait while we verify your payment...</p>
+    <div id="countdown"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var room_id = "{{ room_id }}"; // Ensure this is passed correctly from your Django view
+            var checkPaymentInterval = setInterval(function() {
+                $.ajax({
+                    url: "/check-payment-status/" + room_id + "/", // Make sure this URL matches your Django URL configuration
+                    success: function(data) {
+                        if(data.is_verified) {
+                            clearInterval(checkPaymentInterval);
+                            window.location.href = "{% url 'booking_success' %}"; // Ensure this URL is correct
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error checking payment status:", status, error);
+                    }
+                });
+            }, 5000); // Poll every 5 seconds
+        });
+        </script>
+</body>
+</html>
